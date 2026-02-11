@@ -12,6 +12,7 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  getDoc,
   onSnapshot,
   query,
   orderBy,
@@ -197,40 +198,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ═══════════════════════════════════════════
-     GROWTH DATA / SHOW RESULTS
+     GROWTH DATA / SHOW RESULTS – FIREBASE
+     Fetches from 'growth' collection (docs: BOY, GIRL)
      ═══════════════════════════════════════════ */
-  const growthData = {
-    boy: {
-      0: { height: 49.9, weight: 3.3 }, 1: { height: 54.7, weight: 4.5 },
-      2: { height: 58.4, weight: 5.6 }, 3: { height: 61.4, weight: 6.4 },
-      6: { height: 67.6, weight: 7.9 }, 9: { height: 72.0, weight: 9.0 },
-      12: { height: 75.7, weight: 9.6 }, 18: { height: 82.3, weight: 10.9 },
-      24: { height: 87.8, weight: 12.2 }, 36: { height: 96.1, weight: 14.3 },
-      48: { height: 103.3, weight: 16.3 }, 60: { height: 110.0, weight: 18.3 },
-      72: { height: 116.0, weight: 20.5 },
-    },
-    girl: {
-      0: { height: 49.1, weight: 3.2 }, 1: { height: 53.7, weight: 4.2 },
-      2: { height: 57.1, weight: 5.1 }, 3: { height: 59.8, weight: 5.8 },
-      6: { height: 65.7, weight: 7.3 }, 9: { height: 70.1, weight: 8.2 },
-      12: { height: 74.0, weight: 8.9 }, 18: { height: 80.7, weight: 10.2 },
-      24: { height: 86.4, weight: 11.5 }, 36: { height: 95.1, weight: 13.9 },
-      48: { height: 102.7, weight: 16.1 }, 60: { height: 109.4, weight: 18.2 },
-      72: { height: 115.1, weight: 20.2 },
-    }
-  };
+  let growthData = { boy: {}, girl: {} };
 
-  document.getElementById('showResultsBtn').addEventListener('click', () => {
+  // ── Fetch growth data from Firestore ──
+  async function fetchGrowthData() {
+    try {
+      const boySnap = await getDoc(doc(db, 'growth', 'BOY'));
+      const girlSnap = await getDoc(doc(db, 'growth', 'GIRL'));
+      if (boySnap.exists()) growthData.boy = boySnap.data();
+      if (girlSnap.exists()) growthData.girl = girlSnap.data();
+      populateAgeSelect();
+    } catch (err) {
+      console.error('Error fetching growth data:', err);
+    }
+  }
+
+  // ── Helper: convert month number to display label ──
+  function monthLabel(month) {
+    if (month === 0) return '0 Months (Birth)';
+    if (month % 12 === 0) {
+      const years = month / 12;
+      return years === 1 ? '1 Year' : `${years} Years`;
+    }
+    return month === 1 ? '1 Month' : `${month} Months`;
+  }
+
+  // ── Dynamically populate age select (0-72) ──
+  function populateAgeSelect() {
+    const select = document.getElementById('childAgeSelect');
+    // Keep only the disabled placeholder
+    select.innerHTML = '<option value="" disabled selected>Child\'s Age</option>';
+
+    for (let m = 0; m <= 72; m++) {
+      const opt = document.createElement('option');
+      opt.value = m;
+      opt.textContent = monthLabel(m);
+      select.appendChild(opt);
+    }
+  }
+
+  // ── Show height/weight for selected gender + age ──
+  function showGrowthResult() {
     const gender = document.querySelector('.gender-btn.selected')?.dataset.gender || 'boy';
     const age = document.getElementById('childAgeSelect').value;
     const heightEl = document.getElementById('heightValue');
     const weightEl = document.getElementById('weightValue');
 
-    if (!age) { heightEl.textContent = '--'; weightEl.textContent = '--'; return; }
+    if (!age && age !== '0' && age !== 0) {
+      heightEl.textContent = '--';
+      weightEl.textContent = '--';
+      return;
+    }
+
     const data = growthData[gender]?.[age];
-    if (data) { heightEl.textContent = data.height; weightEl.textContent = data.weight; }
-    else { heightEl.textContent = '--'; weightEl.textContent = '--'; }
+    if (data) {
+      heightEl.textContent = data.height;
+      weightEl.textContent = data.weight;
+    } else {
+      heightEl.textContent = '--';
+      weightEl.textContent = '--';
+    }
+  }
+
+  // ── Auto-update when age changes ──
+  document.getElementById('childAgeSelect').addEventListener('change', showGrowthResult);
+
+  // ── Auto-update when gender changes ──
+  document.querySelectorAll('.gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Small delay to let the gender selection update first
+      setTimeout(showGrowthResult, 50);
+    });
   });
+
+  // ── Show Results button still works ──
+  document.getElementById('showResultsBtn').addEventListener('click', showGrowthResult);
+
+  // ── Load data on init ──
+  fetchGrowthData();
 
 
   /* ═══════════════════════════════════════════
