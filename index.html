@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vital Rise Health Dashboard</title>
-  <meta name="description" content="VitalRise Health Dashboard – Manage nutrition, track growth, and view beneficiaries." />
+  <meta name="description"
+    content="VitalRise Health Dashboard – Manage nutrition, track growth, and view beneficiaries." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 
   <!-- ======== NAVBAR ======== -->
   <nav class="navbar" id="navbar">
     <div class="navbar-left">
-      <div class="navbar-logo">V</div>
+      <img src="assets/logo.png" alt="Vital Rise Logo" class="navbar-logo-img" />
       <span class="navbar-title">Vital Rise</span>
     </div>
     <div class="navbar-right">
@@ -30,278 +33,294 @@
     </div>
   </nav>
 
-  <!-- ======== PAGE HEADER ======== -->
-  <header class="page-header">
-    <h1>Dashboard Overview</h1>
-    <p>Manage nutrition, track growth, and view beneficiaries.</p>
-  </header>
+  <!-- ======== CAROUSEL MAIN ======== -->
+  <main class="carousel-container" id="carouselContainer">
 
-  <!-- ======== MAIN CONTENT ======== -->
-  <main class="dashboard-grid">
+    <!-- Navigation Arrows -->
+    <button class="carousel-arrow carousel-arrow-left" id="carouselPrev" aria-label="Previous section">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button class="carousel-arrow carousel-arrow-right" id="carouselNext" aria-label="Next section">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
 
-    <!-- ──────── NUTRITION TRACKER ──────── -->
-    <section class="card nutrition-card" id="nutritionTracker">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="card-icon nutrition-icon"><i class="fa-solid fa-utensils"></i></span>
-          <h2>Nutrition Tracker</h2>
-        </div>
-        <button class="card-menu-btn" id="nutritionMenuBtn" aria-label="More options">
-          <i class="fa-solid fa-ellipsis-vertical"></i>
-        </button>
-      </div>
+    <!-- Carousel Track -->
+    <div class="carousel-track-wrapper">
+      <div class="carousel-track" id="carouselTrack">
 
-      <div class="card-body nutrition-body">
-        <!-- Pregnant -->
-        <div class="accordion-item active" id="accordionPregnant">
-          <button class="accordion-header" data-target="pregnantContent">
-            <span class="accordion-icon pregnant-icon"><i class="fa-solid fa-person-pregnant"></i></span>
-            <span class="accordion-label">Pregnant</span>
-            <i class="fa-solid fa-chevron-down accordion-arrow"></i>
-          </button>
-          <div class="accordion-content" id="pregnantContent">
-            <label class="field-label">Nutritional Value</label>
-            <input type="text" class="field-input" placeholder="Enter value" id="pregnantInput" />
-            <div class="total-line">
-              <span>Total Grams</span>
-              <span class="total-value" id="pregnantTotal">0</span>
+        <!-- ──────── SLIDE 1: NUTRITION TRACKER ──────── -->
+        <div class="carousel-slide" data-slide="0">
+          <section class="card nutrition-card" id="nutritionTracker">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon nutrition-icon"><i class="fa-solid fa-utensils"></i></span>
+                <h2>Nutrition Tracker</h2>
+              </div>
+              <button class="card-menu-btn" id="nutritionMenuBtn" aria-label="More options">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
             </div>
-          </div>
-        </div>
 
-        <!-- Lactating -->
-        <div class="accordion-item" id="accordionLactating">
-          <button class="accordion-header" data-target="lactatingContent">
-            <span class="accordion-icon lactating-icon"><i class="fa-solid fa-person-breastfeeding"></i></span>
-            <span class="accordion-label">Lactating</span>
-            <i class="fa-solid fa-chevron-down accordion-arrow"></i>
-          </button>
-          <div class="accordion-content" id="lactatingContent">
-            <label class="field-label">Nutritional Value</label>
-            <input type="text" class="field-input" placeholder="Enter value" id="lactatingInput" />
-            <div class="total-line">
-              <span>Total Grams</span>
-              <span class="total-value" id="lactatingTotal">0</span>
-            </div>
-          </div>
-        </div>
+            <div class="card-body nutrition-body">
+              <!-- Pregnant -->
+              <div class="accordion-item active" id="accordionPregnant">
+                <button class="accordion-header" data-target="pregnantContent">
+                  <span class="accordion-icon pregnant-icon"><i class="fa-solid fa-person-pregnant"></i></span>
+                  <span class="accordion-label">Pregnant</span>
+                  <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                </button>
+                <div class="accordion-content" id="pregnantContent">
+                  <label class="field-label">Nutritional Value</label>
+                  <input type="text" class="field-input" placeholder="Enter value" id="pregnantInput" />
+                  <div class="total-line">
+                    <span>Total Grams</span>
+                    <span class="total-value" id="pregnantTotal">0</span>
+                  </div>
+                </div>
+              </div>
 
-        <!-- 6 months - 3 years -->
-        <div class="accordion-item" id="accordion6m3y">
-          <button class="accordion-header" data-target="content6m3y">
-            <span class="accordion-icon age-icon"><i class="fa-solid fa-baby"></i></span>
-            <span class="accordion-label">6 months - 3 years</span>
-            <i class="fa-solid fa-chevron-down accordion-arrow"></i>
-          </button>
-          <div class="accordion-content" id="content6m3y">
-            <label class="field-label">Nutritional Value</label>
-            <input type="text" class="field-input" placeholder="Enter value" id="input6m3y" />
-            <div class="total-line">
-              <span>Total Grams</span>
-              <span class="total-value" id="total6m3y">0</span>
-            </div>
-          </div>
-        </div>
+              <!-- Lactating -->
+              <div class="accordion-item" id="accordionLactating">
+                <button class="accordion-header" data-target="lactatingContent">
+                  <span class="accordion-icon lactating-icon"><i class="fa-solid fa-person-breastfeeding"></i></span>
+                  <span class="accordion-label">Lactating</span>
+                  <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                </button>
+                <div class="accordion-content" id="lactatingContent">
+                  <label class="field-label">Nutritional Value</label>
+                  <input type="text" class="field-input" placeholder="Enter value" id="lactatingInput" />
+                  <div class="total-line">
+                    <span>Total Grams</span>
+                    <span class="total-value" id="lactatingTotal">0</span>
+                  </div>
+                </div>
+              </div>
 
-        <!-- 3 years - 6 years -->
-        <div class="accordion-item" id="accordion3y6y">
-          <button class="accordion-header" data-target="content3y6y">
-            <span class="accordion-icon age-icon"><i class="fa-solid fa-child"></i></span>
-            <span class="accordion-label">3 years - 6 years</span>
-            <i class="fa-solid fa-chevron-down accordion-arrow"></i>
-          </button>
-          <div class="accordion-content" id="content3y6y">
-            <label class="field-label">Nutritional Value</label>
-            <input type="text" class="field-input" placeholder="Enter value" id="input3y6y" />
-            <div class="total-line">
-              <span>Total Grams</span>
-              <span class="total-value" id="total3y6y">0</span>
-            </div>
-          </div>
-        </div>
+              <!-- 6 months - 3 years -->
+              <div class="accordion-item" id="accordion6m3y">
+                <button class="accordion-header" data-target="content6m3y">
+                  <span class="accordion-icon age-icon"><i class="fa-solid fa-baby"></i></span>
+                  <span class="accordion-label">6 months - 3 years</span>
+                  <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                </button>
+                <div class="accordion-content" id="content6m3y">
+                  <label class="field-label">Nutritional Value</label>
+                  <input type="text" class="field-input" placeholder="Enter value" id="input6m3y" />
+                  <div class="total-line">
+                    <span>Total Grams</span>
+                    <span class="total-value" id="total6m3y">0</span>
+                  </div>
+                </div>
+              </div>
 
-        <!-- Adolescent -->
-        <div class="accordion-item" id="accordionAdolescent">
-          <button class="accordion-header" data-target="adolescentContent">
-            <span class="accordion-icon adolescent-icon"><i class="fa-solid fa-child-reaching"></i></span>
-            <span class="accordion-label">Adolescent</span>
-            <i class="fa-solid fa-chevron-down accordion-arrow"></i>
-          </button>
-          <div class="accordion-content" id="adolescentContent">
-            <label class="field-label">Nutritional Value</label>
-            <input type="text" class="field-input" placeholder="Enter value" id="adolescentInput" />
-            <div class="total-line">
-              <span>Total Grams</span>
-              <span class="total-value" id="adolescentTotal">0</span>
-            </div>
-          </div>
-        </div>
-      </div>
+              <!-- 3 years - 6 years -->
+              <div class="accordion-item" id="accordion3y6y">
+                <button class="accordion-header" data-target="content3y6y">
+                  <span class="accordion-icon age-icon"><i class="fa-solid fa-child"></i></span>
+                  <span class="accordion-label">3 years - 6 years</span>
+                  <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                </button>
+                <div class="accordion-content" id="content3y6y">
+                  <label class="field-label">Nutritional Value</label>
+                  <input type="text" class="field-input" placeholder="Enter value" id="input3y6y" />
+                  <div class="total-line">
+                    <span>Total Grams</span>
+                    <span class="total-value" id="total3y6y">0</span>
+                  </div>
+                </div>
+              </div>
 
-      <div class="card-footer nutrition-footer">
-        <span>Grand Total Grams</span>
-        <span class="total-value" id="grandTotal">0</span>
-      </div>
-    </section>
-
-    <!-- ──────── GROWTH TRACKER ──────── -->
-    <section class="card growth-card" id="growthTracker">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="card-icon growth-icon"><i class="fa-solid fa-chart-line"></i></span>
-          <h2>Growth Tracker</h2>
-        </div>
-        <button class="card-menu-btn" id="growthInfoBtn" aria-label="Info">
-          <i class="fa-solid fa-circle-info"></i>
-        </button>
-      </div>
-
-      <div class="card-body growth-body">
-        <!-- Gender Selection -->
-        <p class="section-label">Gender Selection</p>
-        <div class="gender-selector" id="genderSelector">
-          <button class="gender-btn selected" data-gender="boy" id="genderBoyBtn">
-            <span class="gender-symbol">♂</span>
-            <span class="gender-text">Boy</span>
-            <span class="gender-check"><i class="fa-solid fa-circle-check"></i></span>
-          </button>
-          <button class="gender-btn" data-gender="girl" id="genderGirlBtn">
-            <span class="gender-symbol girl-symbol">♀</span>
-            <span class="gender-text">Girl</span>
-          </button>
-        </div>
-
-        <!-- Child's Age -->
-        <p class="section-label">Child's Age</p>
-        <div class="select-wrapper" id="childAgeWrapper">
-          <span class="select-icon"><i class="fa-solid fa-baby"></i></span>
-          <select class="field-select" id="childAgeSelect">
-            <option value="" disabled selected>Child's Age (Months)</option>
-            <option value="0">0 Months</option>
-            <option value="1">1 Month</option>
-            <option value="2">2 Months</option>
-            <option value="3">3 Months</option>
-            <option value="6">6 Months</option>
-            <option value="9">9 Months</option>
-            <option value="12">12 Months (1 Year)</option>
-            <option value="18">18 Months</option>
-            <option value="24">24 Months (2 Years)</option>
-            <option value="36">36 Months (3 Years)</option>
-            <option value="48">48 Months (4 Years)</option>
-            <option value="60">60 Months (5 Years)</option>
-            <option value="72">72 Months (6 Years)</option>
-          </select>
-        </div>
-        <p class="helper-text">Select age (0 months - 6 years)</p>
-
-        <!-- Show Results -->
-        <button class="btn-primary show-results-btn" id="showResultsBtn">
-          Show Results <i class="fa-solid fa-chart-column"></i>
-        </button>
-
-        <!-- Standard Growth Estimates -->
-        <p class="estimates-label">STANDARD GROWTH ESTIMATES</p>
-        <div class="estimate-row">
-          <span class="estimate-icon height-icon"><i class="fa-solid fa-ruler-vertical"></i></span>
-          <span class="estimate-name">Height</span>
-          <span class="estimate-value" id="heightValue">--</span>
-          <span class="estimate-unit">cm</span>
-        </div>
-        <div class="estimate-row">
-          <span class="estimate-icon weight-icon"><i class="fa-solid fa-weight-scale"></i></span>
-          <span class="estimate-name">Weight</span>
-          <span class="estimate-value" id="weightValue">--</span>
-          <span class="estimate-unit">kg</span>
-        </div>
-      </div>
-
-      <div class="card-footer growth-footer">
-        <p>Based on Poshan Abhiyan Data Mainly for Poshan Tracker</p>
-      </div>
-    </section>
-
-    <!-- ──────── BENEFICIARY DETAILS ──────── -->
-    <section class="card beneficiary-card" id="beneficiaryDetails">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="card-icon beneficiary-icon"><i class="fa-solid fa-users"></i></span>
-          <h2>Beneficiary Details</h2>
-        </div>
-        <span class="badge" id="totalBadge">Total: 86</span>
-      </div>
-
-      <div class="card-body beneficiary-body">
-        <!-- Search -->
-        <div class="search-wrapper" id="searchWrapper">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i>
-          <input type="text" class="search-input" placeholder="Search beneficiaries..." id="beneficiarySearch" />
-        </div>
-
-        <!-- Add New Beneficiary -->
-        <button class="add-new-btn" id="addNewBeneficiaryToggle">
-          <i class="fa-solid fa-user-plus"></i>
-          <span>Add New Beneficiary</span>
-        </button>
-
-        <!-- Beneficiary Form -->
-        <form class="beneficiary-form" id="beneficiaryForm">
-          <label class="form-label">FULL NAME</label>
-          <input type="text" class="form-input" placeholder="e.g. Rahul Kumar" id="fullNameInput" />
-
-          <label class="form-label">AADHAR NUMBER</label>
-          <div class="input-icon-wrapper">
-            <input type="text" class="form-input" placeholder="12-digit number (XXXX...)" id="aadharInput" />
-            <i class="fa-regular fa-address-card input-trail-icon"></i>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">D.O.B</label>
-              <div class="input-icon-wrapper">
-                <input type="text" class="form-input" placeholder="mm/dd/..." id="dobInput" />
-                <i class="fa-regular fa-calendar input-trail-icon"></i>
+              <!-- Adolescent -->
+              <div class="accordion-item" id="accordionAdolescent">
+                <button class="accordion-header" data-target="adolescentContent">
+                  <span class="accordion-icon adolescent-icon"><i class="fa-solid fa-child-reaching"></i></span>
+                  <span class="accordion-label">Adolescent</span>
+                  <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                </button>
+                <div class="accordion-content" id="adolescentContent">
+                  <label class="field-label">Nutritional Value</label>
+                  <input type="text" class="field-input" placeholder="Enter value" id="adolescentInput" />
+                  <div class="total-line">
+                    <span>Total Grams</span>
+                    <span class="total-value" id="adolescentTotal">0</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">PHONE</label>
-              <div class="input-icon-wrapper">
-                <input type="text" class="form-input" placeholder="+91" id="phoneInput" />
-                <i class="fa-solid fa-phone input-trail-icon"></i>
-              </div>
+
+            <div class="card-footer nutrition-footer">
+              <span>Grand Total Grams</span>
+              <span class="total-value" id="grandTotal">0</span>
             </div>
-          </div>
-
-          <button type="submit" class="btn-primary add-beneficiary-btn" id="addBeneficiaryBtn">
-            <i class="fa-solid fa-circle-plus"></i> Add Beneficiary
-          </button>
-        </form>
-
-        <!-- Beneficiary List -->
-        <div class="beneficiary-list-header">
-          <h3>Beneficiary List</h3>
-          <a href="#" class="view-all-link" id="viewAllLink">View All</a>
+          </section>
         </div>
 
-        <ul class="beneficiary-list" id="beneficiaryList">
-          <li class="beneficiary-item">
-            <div class="beneficiary-info">
-              <p class="beneficiary-name">Nazmeena Begum</p>
-              <p class="beneficiary-aadhar">AADHAR: 9859 9023 2128</p>
+        <!-- ──────── SLIDE 2: GROWTH TRACKER ──────── -->
+        <div class="carousel-slide" data-slide="1">
+          <section class="card growth-card" id="growthTracker">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon growth-icon"><i class="fa-solid fa-chart-line"></i></span>
+                <h2>Growth Tracker</h2>
+              </div>
+              <button class="card-menu-btn" id="growthInfoBtn" aria-label="Info">
+                <i class="fa-solid fa-circle-info"></i>
+              </button>
             </div>
-            <button class="delete-btn" aria-label="Delete beneficiary">
-              <i class="fa-regular fa-trash-can"></i>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </section>
+
+            <div class="card-body growth-body">
+              <p class="section-label">Gender Selection</p>
+              <div class="gender-selector" id="genderSelector">
+                <button class="gender-btn selected" data-gender="boy" id="genderBoyBtn">
+                  <span class="gender-symbol">♂</span>
+                  <span class="gender-text">Boy</span>
+                  <span class="gender-check"><i class="fa-solid fa-circle-check"></i></span>
+                </button>
+                <button class="gender-btn" data-gender="girl" id="genderGirlBtn">
+                  <span class="gender-symbol girl-symbol">♀</span>
+                  <span class="gender-text">Girl</span>
+                </button>
+              </div>
+
+              <p class="section-label">Child's Age</p>
+              <div class="select-wrapper" id="childAgeWrapper">
+                <span class="select-icon"><i class="fa-solid fa-baby"></i></span>
+                <select class="field-select" id="childAgeSelect">
+                  <option value="" disabled selected>Child's Age (Months)</option>
+                  <option value="0">0 Months</option>
+                  <option value="1">1 Month</option>
+                  <option value="2">2 Months</option>
+                  <option value="3">3 Months</option>
+                  <option value="6">6 Months</option>
+                  <option value="9">9 Months</option>
+                  <option value="12">12 Months (1 Year)</option>
+                  <option value="18">18 Months</option>
+                  <option value="24">24 Months (2 Years)</option>
+                  <option value="36">36 Months (3 Years)</option>
+                  <option value="48">48 Months (4 Years)</option>
+                  <option value="60">60 Months (5 Years)</option>
+                  <option value="72">72 Months (6 Years)</option>
+                </select>
+              </div>
+              <p class="helper-text">Select age (0 months - 6 years)</p>
+
+              <button class="btn-primary show-results-btn" id="showResultsBtn">
+                Show Results <i class="fa-solid fa-chart-column"></i>
+              </button>
+
+              <p class="estimates-label">STANDARD GROWTH ESTIMATES</p>
+              <div class="estimate-row">
+                <span class="estimate-icon height-icon"><i class="fa-solid fa-ruler-vertical"></i></span>
+                <span class="estimate-name">Height</span>
+                <span class="estimate-value" id="heightValue">--</span>
+                <span class="estimate-unit">cm</span>
+              </div>
+              <div class="estimate-row">
+                <span class="estimate-icon weight-icon"><i class="fa-solid fa-weight-scale"></i></span>
+                <span class="estimate-name">Weight</span>
+                <span class="estimate-value" id="weightValue">--</span>
+                <span class="estimate-unit">kg</span>
+              </div>
+            </div>
+
+            <div class="card-footer growth-footer">
+              <p>Based on Poshan Abhiyan Data Mainly for Poshan Tracker</p>
+            </div>
+          </section>
+        </div>
+
+        <!-- ──────── SLIDE 3: BENEFICIARY DETAILS ──────── -->
+        <div class="carousel-slide" data-slide="2">
+          <section class="card beneficiary-card" id="beneficiaryDetails">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon beneficiary-icon"><i class="fa-solid fa-users"></i></span>
+                <h2>Beneficiary Details</h2>
+              </div>
+              <span class="badge" id="totalBadge">Total: 86</span>
+            </div>
+
+            <div class="card-body beneficiary-body">
+              <div class="search-wrapper" id="searchWrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search beneficiaries..." id="beneficiarySearch" />
+              </div>
+
+              <button class="add-new-btn" id="addNewBeneficiaryToggle">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Add New Beneficiary</span>
+              </button>
+
+              <form class="beneficiary-form" id="beneficiaryForm">
+                <label class="form-label">FULL NAME</label>
+                <input type="text" class="form-input" placeholder="e.g. Rahul Kumar" id="fullNameInput" />
+
+                <label class="form-label">AADHAR NUMBER</label>
+                <div class="input-icon-wrapper">
+                  <input type="text" class="form-input" placeholder="12-digit number (XXXX...)" id="aadharInput" />
+                  <i class="fa-regular fa-address-card input-trail-icon"></i>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">D.O.B</label>
+                    <div class="input-icon-wrapper">
+                      <input type="text" class="form-input" placeholder="mm/dd/..." id="dobInput" />
+                      <i class="fa-regular fa-calendar input-trail-icon"></i>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">PHONE</label>
+                    <div class="input-icon-wrapper">
+                      <input type="text" class="form-input" placeholder="+91" id="phoneInput" />
+                      <i class="fa-solid fa-phone input-trail-icon"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-primary add-beneficiary-btn" id="addBeneficiaryBtn">
+                  <i class="fa-solid fa-circle-plus"></i> Add Beneficiary
+                </button>
+              </form>
+
+              <div class="beneficiary-list-header">
+                <h3>Beneficiary List</h3>
+                <a href="#" class="view-all-link" id="viewAllLink">View All</a>
+              </div>
+
+              <ul class="beneficiary-list" id="beneficiaryList">
+                <li class="beneficiary-item">
+                  <div class="beneficiary-info">
+                    <p class="beneficiary-name">Nazmeena Begum</p>
+                    <p class="beneficiary-aadhar">AADHAR: 9859 9023 2128</p>
+                  </div>
+                  <button class="delete-btn" aria-label="Delete beneficiary">
+                    <i class="fa-regular fa-trash-can"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+
+      </div><!-- /carousel-track -->
+    </div><!-- /carousel-track-wrapper -->
+
+    <!-- Dot indicators -->
+    <div class="carousel-dots" id="carouselDots">
+      <button class="carousel-dot active" data-slide="0" aria-label="Nutrition Tracker"></button>
+      <button class="carousel-dot" data-slide="1" aria-label="Growth Tracker"></button>
+      <button class="carousel-dot" data-slide="2" aria-label="Beneficiary Details"></button>
+    </div>
+
   </main>
 
   <!-- ======== FOOTER ======== -->
   <footer class="site-footer" id="siteFooter">
-    <p>&copy; 2023 Vital Rise Health Dashboard. All rights reserved.</p>
+    <p>&copy; 2026 Vital Rise Health Dashboard. All rights reserved.</p>
   </footer>
 
   <script src="script.js"></script>
 </body>
+
 </html>
