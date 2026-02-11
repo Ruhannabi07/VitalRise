@@ -874,6 +874,133 @@ body {
 }
 
 /* ======================
+   DESKTOP LAYOUT (≥1024px)
+   All 3 sections side-by-side
+   ====================== */
+@media (min-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+
+  /* Navbar – wider, premium feel */
+  .navbar {
+    padding: 0 48px;
+    height: 62px;
+  }
+
+  .navbar-logo-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navbar-title {
+    font-size: 1.25rem;
+  }
+
+  /* Container – vertical flex → row grid */
+  .carousel-container {
+    padding: 32px 40px 24px;
+    align-items: stretch;
+  }
+
+  /* Track – no horizontal scroll, grid layout */
+  .carousel-track-wrapper {
+    overflow: visible;
+  }
+
+  .carousel-track {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Each slide – full width within its column */
+  .carousel-slide {
+    min-width: 0;
+    width: auto;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .carousel-slide .card {
+    max-width: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Hide carousel navigation */
+  .carousel-arrow {
+    display: none !important;
+  }
+
+  .carousel-dots {
+    display: none !important;
+  }
+
+  /* Cards – more spacious */
+  .card-header {
+    padding: 20px 24px 16px;
+  }
+
+  .card-body {
+    padding: 20px 24px;
+  }
+
+  .card-footer {
+    padding: 16px 24px;
+  }
+
+  .card-title h2 {
+    font-size: 1.12rem;
+  }
+
+  /* Accordion – slightly larger */
+  .accordion-header {
+    padding: 16px 18px;
+  }
+
+  /* Growth tracker – horizontal estimates */
+  .estimate-row {
+    padding: 14px 0;
+  }
+
+  /* Beneficiary – wider form */
+  .beneficiary-form {
+    padding: 20px;
+  }
+
+  .beneficiary-item {
+    padding: 16px 18px;
+  }
+
+  /* Footer wider */
+  .site-footer {
+    padding: 22px 48px;
+  }
+}
+
+/* Extra-wide screens (≥1400px) – more breathing room */
+@media (min-width: 1400px) {
+  .carousel-container {
+    padding: 40px 64px 28px;
+  }
+
+  .carousel-track {
+    gap: 32px;
+  }
+
+  .card-header {
+    padding: 22px 28px 18px;
+  }
+
+  .card-body {
+    padding: 22px 28px;
+  }
+}
+
+/* ======================
    DELETE CONFIRMATION MODAL
    ====================== */
 .confirm-overlay {

@@ -40,8 +40,9 @@ const beneficiariesRef = collection(db, 'beneficiaries');
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ═══════════════════════════════════════════
-     INFINITE CAROUSEL
+     INFINITE CAROUSEL (mobile only)
      ═══════════════════════════════════════════ */
+  const DESKTOP_BREAKPOINT = 1024;
   const track = document.getElementById('carouselTrack');
   const slides = document.querySelectorAll('.carousel-slide');
   const dots = document.querySelectorAll('.carousel-dot');
@@ -51,8 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSlide = 0;
   let isAnimating = false;
 
+  function isDesktop() {
+    return window.innerWidth >= DESKTOP_BREAKPOINT;
+  }
+
   function goToSlide(index, animate = true) {
-    if (isAnimating) return;
+    if (isDesktop() || isAnimating) return;
     if (index < 0) index = totalSlides - 1;
     if (index >= totalSlides) index = 0;
 
@@ -72,6 +77,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Handle resize between mobile ↔ desktop
+  let wasDesktop = isDesktop();
+  window.addEventListener('resize', () => {
+    const nowDesktop = isDesktop();
+    if (nowDesktop && !wasDesktop) {
+      // Switched to desktop → clear transform
+      track.style.transition = 'none';
+      track.style.transform = 'none';
+    } else if (!nowDesktop && wasDesktop) {
+      // Switched to mobile → reset to slide 0
+      currentSlide = 0;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(0%)';
+      dots.forEach((d, i) => d.classList.toggle('active', i === 0));
+    }
+    wasDesktop = nowDesktop;
+  });
+
+  // On load: if desktop, clear any transform
+  if (isDesktop()) {
+    track.style.transition = 'none';
+    track.style.transform = 'none';
+  }
+
   prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
   nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
@@ -82,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('keydown', (e) => {
+    if (isDesktop()) return;
     if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
     if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
   });
@@ -205,13 +235,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ═══════════════════════════════════════════
      NUTRITION INPUTS
+     Formula: factor × 25 × input
      ═══════════════════════════════════════════ */
   const nutritionInputs = [
-    { input: 'pregnantInput', total: 'pregnantTotal' },
-    { input: 'lactatingInput', total: 'lactatingTotal' },
-    { input: 'input6m3y', total: 'total6m3y' },
-    { input: 'input3y6y', total: 'total3y6y' },
-    { input: 'adolescentInput', total: 'adolescentTotal' },
+    { input: 'pregnantInput', total: 'pregnantTotal', factor: 159 },
+    { input: 'lactatingInput', total: 'lactatingTotal', factor: 159 },
+    { input: 'input6m3y', total: 'total6m3y', factor: 150 },
+    { input: 'input3y6y', total: 'total3y6y', factor: 274 },
+    { input: 'adolescentInput', total: 'adolescentTotal', factor: 150 },
   ];
 
   function updateGrandTotal() {
@@ -222,12 +253,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('grandTotal').textContent = grand;
   }
 
-  nutritionInputs.forEach(({ input, total }) => {
+  nutritionInputs.forEach(({ input, total, factor }) => {
     const el = document.getElementById(input);
     if (el) {
       el.addEventListener('input', () => {
         const val = parseFloat(el.value) || 0;
-        document.getElementById(total).textContent = val;
+        const result = factor * 25 * val;
+        document.getElementById(total).textContent = result;
         updateGrandTotal();
       });
     }
