@@ -269,17 +269,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Render full list (respects search filter) ──
   function renderBeneficiaryList() {
-    const query = (beneficiarySearch.value || '').toLowerCase();
+    const searchQuery = (beneficiarySearch.value || '').toLowerCase();
     beneficiaryList.innerHTML = '';
 
     const filtered = allBeneficiaries.filter(b =>
-      b.fullName.toLowerCase().includes(query)
+      (b.fullName || '').toLowerCase().includes(searchQuery)
     );
 
     if (filtered.length === 0) {
       beneficiaryList.innerHTML = `
         <li class="beneficiary-item" style="justify-content:center; color:#6b7280; font-size:0.88rem;">
-          ${query ? 'No matches found.' : 'No beneficiaries yet.'}
+          ${searchQuery ? 'No matches found.' : 'No beneficiaries yet.'}
         </li>`;
       return;
     }
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── Real-time listener from Firestore ──
-  const beneficiaryQuery = query(beneficiariesRef, orderBy('createdAt', 'desc'));
+  const beneficiaryQuery = query(beneficiariesRef);
 
   onSnapshot(beneficiaryQuery, (snapshot) => {
     allBeneficiaries = snapshot.docs.map(docSnap => ({
