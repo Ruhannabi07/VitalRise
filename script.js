@@ -219,11 +219,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Helper: convert month number to display label ──
   function monthLabel(month) {
     if (month === 0) return '0 Months (Birth)';
-    if (month % 12 === 0) {
-      const years = month / 12;
-      return years === 1 ? '1 Year' : `${years} Years`;
-    }
-    return month === 1 ? '1 Month' : `${month} Months`;
+    if (month < 12) return month === 1 ? '1 Month' : `${month} Months`;
+
+    const years = Math.floor(month / 12);
+    const rem = month % 12;
+    const yearStr = years === 1 ? '1 Year' : `${years} Years`;
+    if (rem === 0) return yearStr;
+    const monthStr = rem === 1 ? '1 Month' : `${rem} Months`;
+    return `${yearStr} ${monthStr}`;
   }
 
   // ── Dynamically populate age select (0-72) ──
