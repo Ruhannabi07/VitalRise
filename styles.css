@@ -816,19 +816,6 @@ body {
   color: var(--primary);
 }
 
-.beneficiary-aadhar {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.beneficiary-aadhar i {
-  font-size: 0.72rem;
-  color: var(--primary);
-}
-
 .delete-btn {
   background: none;
   border: none;

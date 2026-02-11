@@ -244,19 +244,51 @@ document.addEventListener('DOMContentLoaded', () => {
   // Store all beneficiaries locally for search filtering
   let allBeneficiaries = [];
 
+  // ── Helper: format Aadhar for display (xxxx-xxxx-xxxx) ──
+  function formatAadharDisplay(val) {
+    if (!val) return '';
+    const digits = val.replace(/\D/g, '');
+    if (digits.length !== 12) return val;
+    return digits.slice(0, 4) + '-' + digits.slice(4, 8) + '-' + digits.slice(8, 12);
+  }
+
+  // ── Helper: format DOB for display (DD/MM/YYYY) ──
+  function formatDobDisplay(val) {
+    if (!val) return '';
+    // Already formatted
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) return val;
+    // Raw 8-digit input: DDMMYYYY
+    const digits = val.replace(/\D/g, '');
+    if (digits.length === 8) {
+      return digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4, 8);
+    }
+    return val;
+  }
+
+  // ── Helper: get name with backward compat ──
+  function getBeneficiaryName(b) {
+    return b.name || b.fullName || '';
+  }
+
   // ── Render a single beneficiary list item ──
   function createBeneficiaryItem(beneficiary) {
     const li = document.createElement('li');
     li.className = 'beneficiary-item';
     li.dataset.id = beneficiary.id;
+
+    const displayName = escapeHtml(getBeneficiaryName(beneficiary));
+    const displayAadhar = formatAadharDisplay(beneficiary.aadhar);
+    const displayDob = formatDobDisplay(beneficiary.dob);
+    const displayPhone = beneficiary.phone ? escapeHtml(beneficiary.phone) : '';
+
     li.innerHTML = `
       <div class="beneficiary-info">
-        <p class="beneficiary-name">${escapeHtml(beneficiary.fullName)}</p>
+        <p class="beneficiary-name">${displayName}</p>
         <div class="beneficiary-details-row">
-          <span class="beneficiary-detail"><i class="fa-solid fa-phone"></i> ${escapeHtml(beneficiary.phone) || 'N/A'}</span>
-          <span class="beneficiary-detail"><i class="fa-solid fa-calendar"></i> ${escapeHtml(beneficiary.dob) || 'N/A'}</span>
+          ${displayPhone ? `<span class="beneficiary-detail"><i class="fa-solid fa-phone"></i> ${displayPhone}</span>` : ''}
+          ${displayDob ? `<span class="beneficiary-detail"><i class="fa-solid fa-calendar"></i> ${escapeHtml(displayDob)}</span>` : ''}
+          ${displayAadhar ? `<span class="beneficiary-detail"><i class="fa-solid fa-id-card"></i> ${escapeHtml(displayAadhar)}</span>` : ''}
         </div>
-        <p class="beneficiary-aadhar"><i class="fa-solid fa-id-card"></i> AADHAR: ${escapeHtml(beneficiary.aadhar) || 'N/A'}</p>
       </div>
       <button class="delete-btn" aria-label="Delete beneficiary">
         <i class="fa-regular fa-trash-can"></i>
@@ -277,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     beneficiaryList.innerHTML = '';
 
     const filtered = allBeneficiaries.filter(b =>
-      (b.fullName || '').toLowerCase().includes(searchQuery)
+      getBeneficiaryName(b).toLowerCase().includes(searchQuery)
     );
 
     if (filtered.length === 0) {
@@ -320,15 +352,35 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('beneficiaryForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const fullName = document.getElementById('fullNameInput').value.trim();
-    const aadhar = document.getElementById('aadharInput').value.trim();
-    const dob = document.getElementById('dobInput').value.trim();
+    const name = document.getElementById('fullNameInput').value.trim();
+    const aadharRaw = document.getElementById('aadharInput').value.trim();
+    const dobRaw = document.getElementById('dobInput').value.trim();
     const phone = document.getElementById('phoneInput').value.trim();
 
-    if (!fullName) {
+    if (!name) {
       alert('Please enter the full name.');
       return;
     }
+
+    // Validate & format Aadhar (must be 12 digits → xxxx-xxxx-xxxx)
+    const aadharDigits = aadharRaw.replace(/\D/g, '');
+    if (aadharRaw && aadharDigits.length !== 12) {
+      alert('Aadhar number must be exactly 12 digits.');
+      return;
+    }
+    const aadhar = aadharDigits.length === 12
+      ? aadharDigits.slice(0, 4) + '-' + aadharDigits.slice(4, 8) + '-' + aadharDigits.slice(8, 12)
+      : '';
+
+    // Validate & format DOB (DDMMYYYY → DD/MM/YYYY)
+    const dobDigits = dobRaw.replace(/\D/g, '');
+    if (dobRaw && dobDigits.length !== 8) {
+      alert('DOB must be 8 digits in DDMMYYYY format (e.g. 20072001).');
+      return;
+    }
+    const dob = dobDigits.length === 8
+      ? dobDigits.slice(0, 2) + '/' + dobDigits.slice(2, 4) + '/' + dobDigits.slice(4, 8)
+      : '';
 
     const addBtn = document.getElementById('addBeneficiaryBtn');
     addBtn.disabled = true;
@@ -336,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       await addDoc(beneficiariesRef, {
-        fullName,
+        name,
         aadhar,
         dob,
         phone,
@@ -371,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
         <h3>Delete Beneficiary?</h3>
-        <p>Are you sure you want to delete <strong>${escapeHtml(beneficiary.fullName)}</strong>? This action cannot be undone.</p>
+        <p>Are you sure you want to delete <strong>${escapeHtml(getBeneficiaryName(beneficiary))}</strong>? This action cannot be undone.</p>
         <div class="confirm-actions">
           <button class="confirm-cancel" id="confirmCancelBtn">Cancel</button>
           <button class="confirm-delete" id="confirmDeleteBtn">
