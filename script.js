@@ -252,7 +252,11 @@ document.addEventListener('DOMContentLoaded', () => {
     li.innerHTML = `
       <div class="beneficiary-info">
         <p class="beneficiary-name">${escapeHtml(beneficiary.fullName)}</p>
-        <p class="beneficiary-aadhar">AADHAR: ${escapeHtml(beneficiary.aadhar) || 'N/A'}</p>
+        <div class="beneficiary-details-row">
+          <span class="beneficiary-detail"><i class="fa-solid fa-phone"></i> ${escapeHtml(beneficiary.phone) || 'N/A'}</span>
+          <span class="beneficiary-detail"><i class="fa-solid fa-calendar"></i> ${escapeHtml(beneficiary.dob) || 'N/A'}</span>
+        </div>
+        <p class="beneficiary-aadhar"><i class="fa-solid fa-id-card"></i> AADHAR: ${escapeHtml(beneficiary.aadhar) || 'N/A'}</p>
       </div>
       <button class="delete-btn" aria-label="Delete beneficiary">
         <i class="fa-regular fa-trash-can"></i>
